@@ -31,15 +31,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".MainActivity"
-            android:label="듀토리얼액티비티">
+
+        <activity android:name=".StartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Start_app">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="듀토리얼액티비티"/>
         <activity
             android:name=".LoginActivity"
             android:label="로그인 액티비티" />
@@ -54,7 +59,7 @@
             android:label="바텀 메뉴 액티비티" />
         <activity
             android:name=".CameraActivity"
-            android:label="카메라 액티비티"/>
+            android:label="카메라 액티비티" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
