@@ -24,13 +24,16 @@
         android:value="@integer/google_play_services_version" />
 
     <application
+        android:largeHeap="true"
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/stamp_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/stamp_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:label="듀토리얼액티비티">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
