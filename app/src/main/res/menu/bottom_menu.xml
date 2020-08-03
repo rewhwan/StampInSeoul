@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_gps"
+        android:enabled="true"
+        android:icon="@drawable/gps"
+        android:title="Gps"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_map"
+        android:enabled="true"
+        android:icon="@drawable/map"
+        android:title="Map"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_review"
+        android:enabled="true"
+        android:icon="@drawable/review"
+        android:title="Album"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_more"
+        android:enabled="true"
+        android:icon="@drawable/more"
+        android:title="More"
+        app:showAsAction="ifRoom"/>
+
+</menu>

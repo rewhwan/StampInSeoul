@@ -3,9 +3,30 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#ff0000</item>
+    </style>
+
+    <style name="Start_app" parent="android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@drawable/roading2</item>
+    </style>
+
+    <!-- 카카오 네이티브앱 키 -->
+    <string name="kakao_app_key">3ee9ed14bdd4f613f72bdd1a3c82dce5</string>
+
+    <!-- 디버그 키 -->
+    <!-- <string name="pGke5ClkWgMcTb+KbdUUx6lcT8s="></string> -->
+
+    <style name="TapTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="colorPrimary">#303136</item>
+
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/darker_gray</item>
+
+        <item name="colorAccent">@android:color/white</item>
+
     </style>
 
 </resources>
