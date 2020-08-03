@@ -51,7 +51,10 @@
             android:label="검색 액티비티" />
         <activity
             android:name=".BottomMenuActivity"
-            android:label="바텀 메뉴 액티비티"/>
+            android:label="바텀 메뉴 액티비티" />
+        <activity
+            android:name=".CameraActivity"
+            android:label="카메라 액티비티"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
