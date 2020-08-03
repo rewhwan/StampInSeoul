@@ -45,7 +45,10 @@
             android:label="로그인 액티비티" />
         <activity
             android:name=".ThemeActivity"
-            android:label="테마 액티비티"/>
+            android:label="테마 액티비티" />
+        <activity
+            android:name=".SearchActivity"
+            android:label="검색 액티비티"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
