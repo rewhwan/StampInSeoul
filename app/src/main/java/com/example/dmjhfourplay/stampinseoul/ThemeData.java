@@ -20,7 +20,7 @@ public class ThemeData implements Serializable {
 
     public ThemeData() {}
 
-    public ThemeData(String title, String firstImage, String addr, double mapX, double mapY) {
+    public ThemeData(String title, String addr, double mapX, double mapY, String firstImage) {
         this.title = title;
         this.firstImage = firstImage;
         this.addr = addr;
