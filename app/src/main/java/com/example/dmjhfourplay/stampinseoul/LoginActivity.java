@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.pm.PackageInstaller;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -102,6 +102,55 @@ public class LoginActivity extends AppCompatActivity {
                 //로그인에 성공했을 때. MeV2Response 객체 넘어오는데, 로그인한 유저의 정보를 담고 있는 중요객체.
                 @Override
                 public void onSuccess(MeV2Response result) {
+
+                    try {
+
+                        MainActivity.dbHelper = new DBHelper(getApplicationContext());
+
+                        userId = result.getId();
+
+                        MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
+
+
+                        String insertUserInfo = "INSERT or REPLACE INTO userTBL values('"
+                                + result.getId() + "' , '"
+                                + result.getNickname() + "' , '"
+                                + result.getProfileImagePath() + "');";
+
+                        //+ " SELECT * FROM userTBL WHERE NOT EXISTS (SELECT userId FROM userTBL WHERE userID='" + result.getId() + "') LIMIT 1;";
+
+                        MainActivity.db.execSQL(insertUserInfo);
+
+                        // 새로 로그인한 유저의 전용 테이블 2개 생성
+                        String createZzimTBL = "CREATE TABLE IF NOT EXISTS ZZIM_" + result.getId() + "("
+                                + "title TEXT PRIMARY KEY, "
+                                + "addr TEXT, "
+                                + "mapX REAL, "
+                                + "mapY REAL, "
+                                + "firstImage TEXT); ";
+
+                        MainActivity.db.execSQL(createZzimTBL);
+
+                        String createStampTBL = "CREATE TABLE IF NOT EXISTS STAMP_" + result.getId() + "("
+                                + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                + "title TEXT, "
+                                + "addr TEXT, "
+                                + "mapX REAL, "
+                                + "mapY REAL, "
+                                + "firstImage TEXT, "
+                                + "picture TEXT, "
+                                + "content_pola TEXT, "
+                                + "content_title TEXT, "
+                                + "contents TEXT, "
+                                + "complete INTEGER);";
+
+
+                        MainActivity.db.execSQL(createStampTBL);
+
+                    } catch (SQLiteConstraintException e) {
+
+                    }
+
                     userId = result.getId();
 
                     Log.d("TAG", userId.toString());

@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOnTabSelectedListener, ViewPager.OnPageChangeListener, View.OnClickListener {
 
+    //플로팅 버튼 전역변수
     private FloatingActionButton fab, fab1, fab2;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
@@ -23,15 +24,16 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
 
-        // == 플로팅 버튼, 드로어
-
+        // 플로팅 버튼, 드로어 레이아웃 설정
         fab = findViewById(R.id.fab);
         fab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
 
+        // 애니메이션 변수
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
 
+        //이벤트 등록
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
@@ -41,19 +43,21 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
     public void onClick(View view) {
 
         switch (view.getId()) {
+
+            //플로팅 버튼을 열고 닫는 버튼
             case R.id.fab :
-
                 anim();
-
                 break;
 
+            //BottomMenuActivity로 이동시켜주는 버튼
             case R.id.fab1 :
-
                 anim();
-
                 Intent intent = new Intent(ThemeActivity.this, BottomMenuActivity.class);
-
                 startActivity(intent);
+                break;
+
+            //찜목록을 보여주는 버튼
+            case R.id.fab2:
 
                 break;
         }
@@ -90,6 +94,7 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
 
     }
 
+    //플로팅 버튼을 눌렀을 때 열고 닫히는 애니메이션 효과
     public void anim() {
 
         if (isFabOpen) {
