@@ -1,4 +1,6 @@
 package com.example.dmjhfourplay.stampinseoul;
 
-public class AlbumActivity {
+import androidx.fragment.app.Fragment;
+
+public class AlbumActivity extends Fragment {
 }
