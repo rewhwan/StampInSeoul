@@ -92,9 +92,9 @@ public class MapLocateAdapter extends RecyclerView.Adapter<MapLocateAdapter.Cust
             super(itemView);
 
             imaProfile = itemView.findViewById(R.id.fImgProfile);
-            imgPhoto = itemView.findViewById(R.id.imgPhoto);
+            imgPhoto = itemView.findViewById(R.id.fImgCamera);
 
-            txtName = itemView.findViewById(R.id.txtName);
+            txtName = itemView.findViewById(R.id.fTxtName);
             txtContent = itemView.findViewById(R.id.txtContent);
         }
     }
