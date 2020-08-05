@@ -140,6 +140,7 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
         Animation ai = AnimationUtils.loadAnimation(view.getContext(),R.anim.fade_in);
         gps_back.startAnimation(ai);
 
+        locationText = view.findViewById(R.id.location);
         locationText.setText("등록 버튼을 눌러주세요.");
 
         String[] s = {"red_wave.json", "blue_wave.json", "yellow_wave.json", "green_wave.json", "black_wave.json"};
