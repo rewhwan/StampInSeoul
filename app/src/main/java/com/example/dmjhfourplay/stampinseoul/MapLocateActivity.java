@@ -1,4 +1,6 @@
 package com.example.dmjhfourplay.stampinseoul;
 
-public class MapLocateActivity {
+import androidx.fragment.app.Fragment;
+
+public class MapLocateActivity extends Fragment {
 }

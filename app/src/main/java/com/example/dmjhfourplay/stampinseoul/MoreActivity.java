@@ -1,4 +1,6 @@
 package com.example.dmjhfourplay.stampinseoul;
 
-public class MoreActivity {
+import androidx.fragment.app.Fragment;
+
+public class MoreActivity extends Fragment {
 }
