@@ -2,6 +2,7 @@ package com.example.dmjhfourplay.stampinseoul;
 
 import androidx.fragment.app.Fragment;
 
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +32,10 @@ import java.util.Random;
 //================ 내 정보 => 1번 Fragment => GpsActivity ===================//
 
 public class GpsActivity extends Fragment implements View.OnClickListener,View.OnTouchListener {
+
+    LocationManager locManager; //위치정보 관련
+//    AlertReceiver receiver;
+    TextView locationText;
 
     // == recyclerView.addOnItemTouchListener() 관련 변수
     double lastlat = 0.0;
@@ -70,7 +76,7 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_gps,container,false);
 
-        // === 로딩 애니메이션 ===
+        //==================================== 로딩 애니메이션 ====================================//
         gpsAnimationDialog = new GpsAnimationDialog(view.getContext());
         gpsAnimationDialog.show();
 
@@ -83,7 +89,7 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
             }
         }, 2800);
 
-        // === 리사이클러뷰 ===
+        //==================================== 리사이클러뷰 =======================================//
         recyclerView = view.findViewById(R.id.recyclerView);
         imgGpsPicture = view.findViewById(R.id.imgGpsPicture);
 
@@ -111,7 +117,7 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
             }
         }));
 
-        // === 플로팅 버튼, 드로어 ===
+        //=============================== 플로팅 버튼, 드로어 =====================================//
         fab = view.findViewById(R.id.fab);
 
         fab_open = AnimationUtils.loadAnimation(view.getContext(),R.anim.fab_open);
@@ -125,13 +131,57 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
         drawer.setOnTouchListener(this);
         d1.setDrawerListener(listener);
 
-        // === 배경 및 애니메이션 ===
+        //================================ 배경 및 애니메이션 =====================================//
         Random ram = new Random();
 
         int num = ram.nextInt(img.length);
         gps_back.setBackgroundResource(img[num]);
 
+        Animation ai = AnimationUtils.loadAnimation(view.getContext(),R.anim.fade_in);
+        gps_back.startAnimation(ai);
 
+        locationText.setText("등록 버튼을 눌러주세요.");
+
+        String[] s = {"red_wave.json", "blue_wave.json", "yellow_wave.json", "green_wave.json", "black_wave.json"};
+
+        animationView1 = view.findViewById(R.id.animation_view1);
+        animationView2 = view.findViewById(R.id.animation_view2);
+        animationView3 = view.findViewById(R.id.animation_view3);
+        animationView4 = view.findViewById(R.id.animation_view4);
+        animationView5 = view.findViewById(R.id.animation_view5);
+
+        animationView1.cancelAnimation();
+        animationView1.setAnimation("black_wave.json");
+        animationView1.loop(true);
+        animationView1.playAnimation();
+
+        animationView2.cancelAnimation();
+        animationView2.setAnimation("red_wave.json");
+        animationView2.loop(true);
+        animationView2.playAnimation();
+
+        animationView2.setVisibility(View.INVISIBLE);
+
+        animationView3.cancelAnimation();
+        animationView3.setAnimation("blue_wave.json");
+        animationView3.loop(true);
+        animationView3.playAnimation();
+
+        animationView3.setVisibility(View.INVISIBLE);
+
+        animationView4.cancelAnimation();
+        animationView4.setAnimation("yellow_wave.json");
+        animationView4.loop(true);
+        animationView4.playAnimation();
+
+        animationView4.setVisibility(View.INVISIBLE);
+
+        animationView5.cancelAnimation();
+        animationView5.setAnimation("green_wave.json");
+        animationView5.loop(true);
+        animationView5.playAnimation();
+
+        animationView5.setVisibility(View.INVISIBLE);
 
         return view;
     }
