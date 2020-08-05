@@ -1,19 +1,26 @@
 package com.example.dmjhfourplay.stampinseoul;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -22,12 +29,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOnTabSelectedListener, ViewPager.OnPageChangeListener, View.OnClickListener {
 
@@ -67,6 +80,35 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
 
+        //뷰페이저 설정
+
+        viewPager=findViewById(R.id.viewPager);
+        tabLayout=findViewById(R.id.tabLayout);
+
+        fragmentStatePagerAdapter = new ThemeViewPagerAdapter(getSupportFragmentManager());
+
+//        viewPager.setAdapter(new ThemeViewPagerAdapter(getSupportFragmentManager()));
+
+        viewPager.setAdapter(fragmentStatePagerAdapter);
+
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(viewPager);
+                tabLayout.setTabsFromPagerAdapter(fragmentStatePagerAdapter);
+                tabLayout.addOnTabSelectedListener(ThemeActivity.this);
+            }
+        });
+
+        viewPager.addOnPageChangeListener(this);
+
+        // == 검색
+
+        edtSearch = findViewById(R.id.edtSearch);
+        btnSearch = findViewById(R.id.btnSearch);
+
+        btnSearch.setOnClickListener(this);
+
         // 플로팅 버튼, 드로어 레이아웃 설정
         fab = findViewById(R.id.fab);
         fab1 = findViewById(R.id.fab1);
@@ -80,6 +122,71 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
+
+        Intent intent = getIntent();
+
+        strNickname = intent.getStringExtra("name");
+        strProfile = intent.getStringExtra("profile");
+        Long strId = intent.getLongExtra("id", 0L);
+
+        // Toast.makeText(getApplicationContext(), strNickname+" 님, 환영합니다!", Toast.LENGTH_SHORT).show();
+
+        Context context = getApplicationContext();
+        CharSequence txt = "메시지입니다.";
+        int time = Toast.LENGTH_SHORT; // or Toast.LENGTH_LONG
+        Toast toast = Toast.makeText(context, txt, time);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.custom_toastview, (ViewGroup)findViewById(R.id.containers));
+
+        TextView txtView = view.findViewById(R.id.txtName);
+        CircleImageView circleImageView = view.findViewById(R.id.txtProfileImage);
+
+        txtView.setText(strNickname);
+
+        Thread thread = new Thread(){
+
+            @Override
+            public void run(){
+
+                try{
+
+                    URL url = new URL(strProfile);
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                    conn.setDoInput(true);
+
+                    conn.connect();
+
+                    InputStream is = conn.getInputStream();
+
+                    bitmap = BitmapFactory.decodeStream(is);
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+        };
+
+        thread.start();
+
+        try {
+
+            thread.join();
+
+            circleImageView.setImageBitmap(bitmap);
+
+        }catch (InterruptedException e){
+
+        }
+
+        toast.setView(view);
+        toast.show();
+
     }
 
     @Override
@@ -196,7 +303,7 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                         }else {
                             Toast.makeText(ThemeActivity.this, "스탬프 리스트에 잘 담았습니다", Toast.LENGTH_SHORT).show();
                             for (ThemeData themeData : checkedList) {
-                                String query = "INSERT INTO STAMP_"+ LoginActivity.userId +"(title, addr, mapX, mpaY, firstImage) VALUES ('"+ themeData.getTitle()+"'," + "'"
+                                String query = "INSERT INTO STAMP_"+ LoginActivity.userId +"(title, addr, mapX, mapY, firstImage) VALUES ('"+ themeData.getTitle()+"'," + "'"
                                         +themeData.getAddr()+"','"
                                         +themeData.getMapX()+"','"
                                         +themeData.getMapY()+"','"
@@ -235,13 +342,17 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
     }
 
     @Override
-    public void onPageScrollStateChanged(int state) {
-
+    public void onPageScrollStateChanged(int i) {
+        if( i == ViewPager.SCROLL_STATE_DRAGGING)
+            isDragged = true;
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-
+        if( !isDragged ){
+            viewPager.setCurrentItem(tab.getPosition());
+        }
+        isDragged = false;
     }
 
     @Override

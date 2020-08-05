@@ -17,6 +17,7 @@ public class ThemeData implements Serializable {
     private double mapX;
     private double mapY;
     private boolean hart=false;
+    private Integer contentsID;
 
     public ThemeData() {}
 
@@ -52,6 +53,14 @@ public class ThemeData implements Serializable {
         this.addr = addr;
         this.mapX = mapX;
         this.mapY = mapY;
+    }
+
+    public Integer getContentsID() {
+        return contentsID;
+    }
+
+    public void setContentsID(Integer contentsID) {
+        this.contentsID = contentsID;
     }
 
     public String getTitle() {
