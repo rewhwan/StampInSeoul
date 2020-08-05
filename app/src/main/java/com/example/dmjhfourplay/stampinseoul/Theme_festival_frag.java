@@ -128,7 +128,7 @@ public class Theme_festival_frag extends Fragment {
         // 축제 15
         String url = "http://api.visitkorea.or.kr/openapi/service/"
                 + "rest/KorService/areaBasedList?ServiceKey=" + KEY
-                + "&areaCode=1&contentTypeId=15&listYN=Y&arrange=P"
+                + "&areaCode=1&contentTypeId=15&listYN=Y&arrange=D"
                 + "&numOfRows=20&pageNo=1&MobileOS=AND&MobileApp="
                 + appName + "&_type=json";
 

@@ -21,6 +21,12 @@ public class ThemeData implements Serializable {
 
     public ThemeData() {}
 
+    public ThemeData(String title, String firstImage, Integer contentsID) {
+        this.title = title;
+        this.firstImage = firstImage;
+        this.contentsID = contentsID;
+    }
+
     public ThemeData(String title, String addr, double mapX, double mapY, String firstImage) {
         this.title = title;
         this.firstImage = firstImage;

@@ -87,8 +87,6 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
 
         fragmentStatePagerAdapter = new ThemeViewPagerAdapter(getSupportFragmentManager());
 
-//        viewPager.setAdapter(new ThemeViewPagerAdapter(getSupportFragmentManager()));
-
         viewPager.setAdapter(fragmentStatePagerAdapter);
 
         tabLayout.post(new Runnable() {
@@ -325,6 +323,21 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                 });
 
                 cursor.close();
+                break;
+
+            case R.id.btnSearch:
+                String word = edtSearch.getText().toString().trim();
+                Intent intent2 = new Intent(ThemeActivity.this,SearchActivity.class);
+                if(word.length() > 1){
+
+                    intent2.putExtra("word",word);
+
+                    startActivity(intent2);
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "두 글자 이상 입력해 주세요", Toast.LENGTH_LONG).show();
+                }
+
                 break;
 
         }
