@@ -79,12 +79,14 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        searchData(word);
+
     }
 
     //검색어를 입력받고 검색어를 통해서 DB의 내용을 불러줍니다.
     public void searchData(final String word) {
 
-        //검색어를 UUTF-8로 인코딩 하여줍니다.
+        //검색어를 UTF-8로 인코딩 하여줍니다.
         try {
             keyword = URLEncoder.encode(word,"UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -123,7 +125,6 @@ public class SearchActivity extends AppCompatActivity {
                         String title = imsi.getString("title");
                         int contentID = imsi.getInt("contentid");
                         ThemeData themeData = new ThemeData(title, firstImage, contentID);
-                        Log.d("LINEBARREL", String.valueOf(contentID));
 
                         while (cursor.moveToNext()) {
                             if (cursor.getString(0).equals(themeData.getTitle())) {
