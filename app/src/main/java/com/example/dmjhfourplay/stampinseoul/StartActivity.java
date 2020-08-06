@@ -2,7 +2,9 @@ package com.example.dmjhfourplay.stampinseoul;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -23,14 +25,24 @@ public class StartActivity extends AppCompatActivity {
 
         getHashKey();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("service", Context.MODE_PRIVATE);
+        Boolean firstActivateFlag = sharedPreferences.getBoolean("firstActivate",true);
+
         try{
             Thread.sleep(2500);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
 
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        if(firstActivateFlag) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }else {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+
     }
 
     // 개인 카카오 키 해시 발급 메소드

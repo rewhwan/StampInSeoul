@@ -3,6 +3,7 @@ package com.example.dmjhfourplay.stampinseoul;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -40,6 +41,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     Context context;
     ArrayList<ThemeData> list;
     int layout;
+    ProgressDialog pDialog;
 
     View view;
     View viewDialog;
@@ -143,7 +145,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     class  AsyncTaskClass extends AsyncTask<Integer, ThemeData, ThemeData> {
 
         @Override
-        protected void onPreExecute() { super.onPreExecute(); }
+        protected void onPreExecute() {
+            super.onPreExecute();
+            displayLoader();
+        }
 
         @Override
         protected ThemeData doInBackground(Integer... integers) {
@@ -203,7 +208,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-
+                    pDialog.dismiss();
                     JSONObject parse_response = null;
                     try {
                         parse_response = (JSONObject) response.get("response");
@@ -222,6 +227,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    pDialog.dismiss();
                     Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
@@ -229,12 +235,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
 
             queue.add(jsonObjectRequest);
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
             return detailThemeData;
+        }
+
+        private void displayLoader() {
+            pDialog = new ProgressDialog(context);
+            pDialog.setMessage("잠시만 기다려 주세요..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
     }
 

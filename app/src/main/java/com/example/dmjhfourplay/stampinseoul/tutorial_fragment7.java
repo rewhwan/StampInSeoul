@@ -1,6 +1,8 @@
 package com.example.dmjhfourplay.stampinseoul;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,11 @@ public class tutorial_fragment7 extends Fragment {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("service", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor =sharedPreferences.edit();
+                editor.putBoolean("firstActivate",false);
+                editor.commit();
+
                 Intent intent = new Intent(getActivity(),LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

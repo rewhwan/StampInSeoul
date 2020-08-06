@@ -152,8 +152,10 @@ public class SearchActivity extends AppCompatActivity {
                             noSearchDlg.dismiss();
                         }
                     });
+                    Toast.makeText(SearchActivity.this, e1.getMessage(), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(SearchActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
 
