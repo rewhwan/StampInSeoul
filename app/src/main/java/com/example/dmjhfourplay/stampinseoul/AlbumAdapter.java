@@ -68,9 +68,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.CustomViewHo
     }
 
     @Override
-    public int getItemCount() {
-        return 0;
-    }
+    public int getItemCount() { return (list != null) ? (list.size()) : (0); }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
 
@@ -92,7 +90,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.CustomViewHo
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtContent = itemView.findViewById(R.id.txtContent);
             txtID = itemView.findViewById(R.id.txtID);
-
         }
     }
     private int exiforToDe(int exifOrientation) {

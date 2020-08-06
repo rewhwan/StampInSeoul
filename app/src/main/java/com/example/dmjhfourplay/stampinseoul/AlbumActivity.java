@@ -70,7 +70,7 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_album, container, false);
 
-
+        findViewByIdFunction();
         // == 리사이클러뷰
 
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -102,7 +102,7 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
 
         drawer.setOnTouchListener(this);
         drawerLayout.setDrawerListener(listener);
-        findViewByIdFunction();
+
         stamoInvisible();
 
         //DB
@@ -265,8 +265,8 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
                                 + "contents TEXT, "
                                 + "complete INTEGER);");
 
-                        Intent intent = new Intent(v.getContext(), ThemeActivity.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(v.getContext(), ThemeActivity.class);
+//                        startActivity(intent);
 
                         getActivity().finish();
 
