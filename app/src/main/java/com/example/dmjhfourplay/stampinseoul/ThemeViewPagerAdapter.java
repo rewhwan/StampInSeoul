@@ -15,7 +15,7 @@ public class ThemeViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: return new Theme_festival_frag();
-            case 1: return new Theme_festival_frag();
+            case 1: return new Theme_shpping_frag();
             case 2: return new Theme_festival_frag();
             case 3: return new Theme_festival_frag();
             case 4: return new Theme_festival_frag();
