@@ -17,14 +17,21 @@ public class ThemeData implements Serializable {
     private double mapX;
     private double mapY;
     private boolean hart=false;
-    private Integer contentsID;
+    private int contentsID;
 
     public ThemeData() {}
 
-    public ThemeData(String title, String firstImage, Integer contentsID) {
+    public ThemeData(String title, String firstImage, int contentsID) {
         this.title = title;
         this.firstImage = firstImage;
         this.contentsID = contentsID;
+    }
+
+    public ThemeData(String title, String addr, double mapX, double mapY) {
+        this.title = title;
+        this.addr = addr;
+        this.mapX = mapX;
+        this.mapY = mapY;
     }
 
     public ThemeData(String title, String addr, double mapX, double mapY, String firstImage) {
@@ -33,6 +40,15 @@ public class ThemeData implements Serializable {
         this.addr = addr;
         this.mapX = mapX;
         this.mapY = mapY;
+    }
+
+    public ThemeData(String title, String addr, double mapX, double mapY, String firstImage, int contentsID) {
+        this.title = title;
+        this.addr = addr;
+        this.mapX = mapX;
+        this.mapY = mapY;
+        this.firstImage = firstImage;
+        this.contentsID = contentsID;
     }
 
     public ThemeData(String title, String picture, String content_pola, String content_title, String contents, int complete) {
@@ -54,14 +70,7 @@ public class ThemeData implements Serializable {
         this.complete = complete;
     }
 
-    public ThemeData(String title, String addr, double mapX, double mapY) {
-        this.title = title;
-        this.addr = addr;
-        this.mapX = mapX;
-        this.mapY = mapY;
-    }
-
-    public Integer getContentsID() {
+    public int getContentsID() {
         return contentsID;
     }
 
