@@ -57,7 +57,7 @@ public class MapLocateAdapter extends RecyclerView.Adapter<MapLocateAdapter.Cust
 
                 intent.setPackage("com.android.chrome");
 
-                view.getContext();
+                view.getContext().startActivity(intent);
             }
         });
 
