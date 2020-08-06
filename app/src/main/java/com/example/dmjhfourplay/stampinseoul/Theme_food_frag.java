@@ -1,14 +1,9 @@
 package com.example.dmjhfourplay.stampinseoul;
 
-
-    //ThemeActivity 쇼핑 테마 Fragment
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.kakao.network.response.JSONObjectResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +30,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Theme_shpping_frag extends Fragment {
+//ThemeActivity 맛집 테마
+
+public class Theme_food_frag extends Fragment {
 
     private View view;
     ProgressDialog pDialog;
@@ -47,25 +44,20 @@ public class Theme_shpping_frag extends Fragment {
     RequestQueue queue;
 
     AlertDialog.Builder dialog;
+
     //메인 화면 출력용
     ArrayList<ThemeData> list = new ArrayList<>();
 
-    //상세 다이얼로그 출력용
-    ThemeData detailThemeData = new ThemeData();
+    LottieAnimationView animationView3 = null;
 
-    final static String TAG = "ThemeActivity";
-    static String key;
+    final static String TAG = "ThemeAcitvity";
+    private String key;
     static final String appName = "StampInSeoul";
-
-    public Theme_shpping_frag() {
-        // Required empty public constructor
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        //String.xml 에서 api키값을 가져옵니다.
         key = getString(R.string.api_key);
 
         view = inflater.inflate(R.layout.frag_theme,container,false);
@@ -76,7 +68,7 @@ public class Theme_shpping_frag extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        Theme_shpping_frag.AsyncTaskClassMain async = new Theme_shpping_frag.AsyncTaskClassMain();
+        Theme_food_frag.AsyncTaskClassMain async = new Theme_food_frag.AsyncTaskClassMain();
         async.execute();
 
         adapter = new ThemeAdapter(R.layout.item_theme,getActivity(),list);
@@ -86,20 +78,19 @@ public class Theme_shpping_frag extends Fragment {
 
     class AsyncTaskClassMain extends AsyncTask<Integer, Long, String> {
 
-        //일반쓰레드를 돌리기 전에 메인쓰레드에서 보여줄 화면을 처리합니다.
+        //일반 쓰레드 돌리기 전 메인쓰레드에서 보여줄 화면처리
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             displayLoader();
         }
 
-        //일반 쓰레드에서 돌릴 네트워크 작
+        //일반쓰레드에서 돌릴 네트워크 작업
         @Override
         protected String doInBackground(Integer... integers) {
             getAreaBasedList();
-            return "작업 종료";
+            return "작업종료";
         }
-
 
         @Override
         protected void onProgressUpdate(Long... values) {
@@ -112,56 +103,56 @@ public class Theme_shpping_frag extends Fragment {
         }
     }
 
-    //contentid를 위한 함수 (contentid는 detailCommon에서 쓰기 위해서 구한다)
+    //contentid를 위한 함수 (contentId는 detailCommon에서 쓰기 위해 구한다)
     private void getAreaBasedList() {
-
         queue = Volley.newRequestQueue(getActivity());
-        //쇼핑의 타입 ID는 38번
+
+        //맛집 코드 39
         String url = "http://api.visitkorea.or.kr/openapi/service/"
                 + "rest/KorService/areaBasedList?ServiceKey=" + key
-                + "&areaCode=1&contentTypeId=38&listYN=Y&arrange=P"
+                + "&areaCode=1&contentTypeId=39&listYN=Y&arrange=P"
                 + "&numOfRows=20&pageNo=1&MobileOS=AND&MobileApp="
                 + appName + "&_type=json";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                pDialog.dismiss();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        pDialog.dismiss();
 
-                try {
-                    JSONObject parse_response = (JSONObject) response.get("response");
-                    JSONObject parse_body = (JSONObject) parse_response.get("body");
-                    JSONObject parse_items = (JSONObject) parse_body.get("items");
-                    JSONArray parse_itemlist = (JSONArray) parse_items.get("item");
+                        try {
+                            JSONObject parse_response = (JSONObject) response.get("response");
+                            JSONObject parse_body = (JSONObject) parse_response.get("body");
+                            JSONObject parse_items = (JSONObject) parse_body.get("items");
+                            JSONArray parse_itemlist = (JSONArray) parse_items.get("item");
 
-                    list.removeAll(list);
+                            for(int i = 0; i < parse_itemlist.length(); i++) {
+                                JSONObject jsonObject = (JSONObject) parse_itemlist.get(i);
 
-                    for(int i = 0; i < parse_itemlist.length(); i++) {
-                        JSONObject jsonObject = (JSONObject) parse_itemlist.get(i);
-                        String firstimage = jsonObject.getString("firstimage");
-                        String title = jsonObject.getString("title");
-                        String addr = jsonObject.getString("addr1");
-                        double mapx = jsonObject.getDouble("mapx");
-                        double mapy = jsonObject.getDouble("mapy");
-                        int contentid = jsonObject.getInt("contentid");
+                                String firstimage = jsonObject.getString("firstimage");
+                                String title = jsonObject.getString("title");
+                                String addr = jsonObject.getString("addr1");
+                                double mapx = jsonObject.getDouble("mapx");
+                                double mapy = jsonObject.getDouble("mapy");
+                                int contentid = jsonObject.getInt("contentid");
 
-                        ThemeData themeData = new ThemeData(title,addr,mapx,mapy,firstimage,contentid);
+                                ThemeData themeData = new ThemeData(title,addr,mapx,mapy,firstimage,contentid);
 
-                        list.add(themeData);
+                                list.add(themeData);
+                            }
+                            recyclerView.setAdapter(adapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    recyclerView.setAdapter(adapter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                pDialog.dismiss();
-                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d(TAG,error.getMessage() + "에러");
-            }
-        });
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,error.getMessage()+"에러");
+                    }
+                });
         queue.add(jsonObjectRequest);
     }
 
@@ -172,5 +163,4 @@ public class Theme_shpping_frag extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
     }
-
 }
