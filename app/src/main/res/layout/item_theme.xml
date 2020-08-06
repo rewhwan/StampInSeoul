@@ -20,7 +20,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#3F4047"
+            android:background="@drawable/itemimg"
             android:elevation="6dp">
 
             <com.makeramen.roundedimageview.RoundedImageView
@@ -81,11 +81,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="0.1"
                 android:text="RoundedImageView + CardView 예제"
                 android:textColor="#FFFFFF"
-                android:textStyle="italic" />
+                android:textStyle="bold|italic" />
 
         </RelativeLayout>
 

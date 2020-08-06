@@ -53,6 +53,8 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
     AlertReceiver receiver; //GPS 값을 받는 브로드캐스트 리시버 관련
     TextView locationText;
     PendingIntent proximityIntent; //등록버튼 관련
+    
+    Toast mToast; // 토스트 메시지 관련
 
     // GPS 위치 관련 변수
     boolean isPermitted = false;
@@ -548,4 +550,20 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
     public boolean onTouch(View view, MotionEvent motionEvent) {
         return false;
     }
+    
+    public void shortMessage(String message){
+        Runnable r = new Runnable(){
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), "목적지에 도착하였습니다.", Toast.LENGTH_SHORT).show();
+                if(mToast != null) mToast.cancel();
+                mToast=Toast.makeText(getContext(), "목적지에 도착하였습니다.", Toast.LENGTH_SHORT);
+                mToast.show();
+            }
+        };
+
+    }
+
+
+
 }

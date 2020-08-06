@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity"
-    android:background="#303136">
+    android:background="@drawable/mainscreen"
+    tools:context=".SearchActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="370dp"
-        android:layout_height="59dp"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="20dp"
-        android:background="#3F4047"
+        android:background="@drawable/a_searchber_design"
         android:elevation="8dp"
         android:gravity="center"
         android:orientation="horizontal"
@@ -39,17 +39,20 @@
                 android:text="검색 : "
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
-                android:textStyle="italic" />
+                android:textStyle="bold|italic" />
 
             <EditText
                 android:id="@+id/edtSearch2"
-                android:layout_width="247dp"
+                android:layout_width="235dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@null"
+                android:hint="입력해주세요"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
-                android:textCursorDrawable="@android:color/darker_gray" />
+                android:textColorHint="#CCE2C1C1"
+                android:textCursorDrawable="@android:color/darker_gray"
+                android:textStyle="italic" />
 
             <ImageButton
                 android:id="@+id/btnSearch2"
@@ -72,6 +75,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"/>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
