@@ -71,8 +71,9 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
         view = inflater.inflate(R.layout.activity_album, container, false);
 
         findViewByIdFunction();
-        // == 리사이클러뷰
 
+
+        // == 리사이클러뷰
         recyclerView = view.findViewById(R.id.recyclerView);
 
         linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -122,6 +123,8 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
 
         Animation ai;
 
+
+        //DB에서 엘범등록 갯수만큼 스템프 등록하기
         for(int i=1;i<=cursorComplete.getCount();i++){
 
             switch (i){
@@ -129,7 +132,6 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
                 case 1:
 
                     stamp1C.setVisibility(View.VISIBLE);
-
                     ai = AnimationUtils.loadAnimation(view.getContext(), R.anim.fade_in);
                     stamp1C.startAnimation(ai);
                     break;

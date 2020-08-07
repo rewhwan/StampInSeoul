@@ -51,10 +51,6 @@ public class BottomMenuActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
     private void newActivityFunction() {
         mapLocateActivity = new MapLocateActivity();
         gpsActivity = new GpsActivity();
@@ -71,7 +67,7 @@ public class BottomMenuActivity extends AppCompatActivity {
         //화면을 전환하기 위해서는 매니저 필요.
         fragmentManager = getSupportFragmentManager();
 
-        //프래그먼트 매니저 구너한을 받아서 화면 체인지 하는 트렌젝션이 필요.
+        //프래그먼트 매니저 권한을 받아서 화면 체인지 하는 트렌젝션이 필요.
         fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (position){
