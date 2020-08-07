@@ -16,6 +16,7 @@ public class tutorial_fragment4 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //메인 액티비티의 setContentView와 같은 기능
         view = inflater.inflate(R.layout.tutorial_frag4,container,false);
 
         //하드웨어 가속을 사용해서 부드럽게 스와이프가 되도록함

@@ -23,22 +23,27 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
 
+        //카카오톡 로그인에 필요한 해시키값을 보여줍니다.
         getHashKey();
 
+        //듀토리얼을 관람한적이 있는지를 확인해줍니다.
         SharedPreferences sharedPreferences = getSharedPreferences("service", Context.MODE_PRIVATE);
         Boolean firstActivateFlag = sharedPreferences.getBoolean("firstActivate",true);
 
         try{
-            Thread.sleep(2500);
+            Thread.sleep(2000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
 
+        //듀토리얼을 관람했는지 여부에 따라서 로그인 혹은 듀토리얼로 분기점을 나눔
         if(firstActivateFlag) {
+            //듀토리얼
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
         }else {
+            //로그인
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -46,7 +51,6 @@ public class StartActivity extends AppCompatActivity {
     }
 
     // 개인 카카오 키 해시 발급 메소드
-
     private void getHashKey(){
         PackageInfo packageInfo = null;
         try {

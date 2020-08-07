@@ -35,11 +35,14 @@ public class tutorial_fragment1 extends Fragment {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //다음에는 듀토리얼을 보지않고 지나가도록 sharedPreference로 저장
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("service", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor =sharedPreferences.edit();
                 editor.putBoolean("firstActivate",false);
                 editor.commit();
 
+                //로그인 액티비티로 이동
                 Intent intent = new Intent(getActivity(),LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
@@ -49,8 +52,8 @@ public class tutorial_fragment1 extends Fragment {
         //하드웨어 가속을 사용해서 부드럽게 스와이프가 되도록함
         view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
-        ImageView marker = view.findViewById(R.id.marker);
         //gif이미지가 움직여서 보이도록 해주는 것
+        ImageView marker = view.findViewById(R.id.marker);
         GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(marker);
         Glide.with(getActivity()).load(R.drawable.markeranimaition).into(gifImage);
         return view;
