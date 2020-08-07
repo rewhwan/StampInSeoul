@@ -8,8 +8,8 @@
         <item name="colorAccent">#ff0000</item>
     </style>
 
-    <style name="Start_app" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowBackground">@drawable/roading2</item>
+    <style name="Start_app" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/roadimg5</item>
     </style>
 
     <!-- 카카오 네이티브앱 키 -->
