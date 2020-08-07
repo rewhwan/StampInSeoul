@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -28,7 +29,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.CustomViewHo
         this.list = list;
     }
 
-
+    //RecycleView 에서 사용할 레이아웃을 설정하는 함수입니다.
+    //사용할 layout 을 layoutInflater 를 통해서 호출합니다
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -38,7 +40,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.CustomViewHo
 
         return viewHolder;
     }
-
+    //아이템 데이터를 넣는함수입니다.
+    //holder과 position 을 통해 아이템에 데이터를 넣습니다.
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder customViewHolder, int position) {
         customViewHolder.txtPola.setText(list.get(position).getContent_pola());
@@ -52,7 +55,30 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.CustomViewHo
         if (list.get(position).getPicture() != null) {
 
             Bitmap bitmap = BitmapFactory.decodeFile(list.get(position).getPicture());
-            customViewHolder.imgReview.setImageBitmap(bitmap);
+            ExifInterface exifInterface = null;
+
+            //속성을 체크해야된다.
+            try {
+
+                exifInterface = new ExifInterface(list.get(position).getPicture());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            int exifOrientation;//방향
+            int exifDegres; //각도
+
+            if (exifInterface != null) {
+                exifOrientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                exifDegres = exiforToDe(exifOrientation);
+            } else {
+                exifDegres = 0;
+            }
+
+            Bitmap bitmapTeep = rotate(bitmap, exifDegres);
+
+            customViewHolder.imgReview.setImageBitmap(bitmapTeep);
 
         } else {
             customViewHolder.imgReview.setImageResource(R.drawable.a_dialog_design);
@@ -67,6 +93,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.CustomViewHo
         }
     }
 
+    //표현할 아이템의 갯수를 반환한다.
     @Override
     public int getItemCount() { return (list != null) ? (list.size()) : (0); }
 

@@ -49,10 +49,12 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        //ID 찾는 함수
         findViewByIdFunction();
 
         title = getIntent().getStringExtra("title");
 
+        //카메라에 권한부여하기
         TedPermission.with(getApplicationContext()).setPermissionListener(new PermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -66,15 +68,18 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         }).setRationaleMessage("카메라 권한이 필요합니다.").setDeniedMessage("거부").setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
 
+        //버튼 이벤트 등록
         btnCapture.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         btnExit.setOnClickListener(this);
     }
 
+    //토스트 메세지 세팅하기
     public void toastDispaly(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
 
+    //ID찾는 함수
     private void findViewByIdFunction() {
         imgPhoto = findViewById(R.id.imgPhoto);
         btnCapture = findViewById(R.id.btnCapture);
@@ -183,10 +188,8 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
             int exifDegres; //각도
 
             if (exifInterface != null) {
-
                 exifOrientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 exifDegres = exiforToDe(exifOrientation);
-
             } else {
                 exifDegres = 0;
             }

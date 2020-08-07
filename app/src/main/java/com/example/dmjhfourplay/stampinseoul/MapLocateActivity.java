@@ -86,7 +86,8 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
 
         fragmentManager = getActivity().getFragmentManager();
 
-        //리사이클
+
+        //리사이클뷰 사용
         recyclerView = view1.findViewById(R.id.recyclerView);
 
         linearLayoutManager = new LinearLayoutManager(view1.getContext());
@@ -99,7 +100,8 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
 
         recyclerView.setAdapter(mapLocateAdapter);
 
-        //맵
+
+        //맵 사용
         mapView = view1.findViewById(R.id.fgGoogleMap);
 
         mapView.onCreate(savedInstanceState);
@@ -107,6 +109,7 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
         mapView.getMapAsync(this);
 
         locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
 
         //리사이클 아이템 클릭 이벤트
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new ClickListener() {
@@ -190,15 +193,21 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
         }
     };
 
+
+    //리스트뷰에 값을 보여주는 함수
     private void listSetting() {
+        //초기화 해준다
         list.removeAll(list);
 
+        //Main 의 DB 를 가져온다
         MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
 
         Cursor cursor;
 
+        //쿼리문 을통해 값을 가져온다
         cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+LoginActivity.userId+";", null);
 
+        //가져온값을 list에 넣어준다
         if(cursor != null){
             while(cursor.moveToNext()){
                 list.add(new ThemeData(cursor.getString(1), cursor.getString(2), cursor.getDouble(3), cursor.getDouble(4)));
@@ -206,24 +215,21 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
         }
     }
 
+
+    //우측 하단의 메뉴바 animation 등록 함수
     public void anim() {
-
         if (isFabOpen) {
-
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
             fab1.setClickable(false);
             fab2.setClickable(false);
             isFabOpen = false;
-
         } else {
-
             fab1.startAnimation(fab_open);
             fab2.startAnimation(fab_open);
             fab1.setClickable(true);
             fab2.setClickable(true);
             isFabOpen = true;
-
         }
     }
 
@@ -244,7 +250,10 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
         super.onLowMemory();
         mapView.onLowMemory();
     }
-        @Override
+
+
+    //우측하단 의 메뉴버튼들 이벤트등록
+    @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.fab : anim(); break;

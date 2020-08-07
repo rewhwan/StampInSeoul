@@ -45,14 +45,17 @@ public class MapLocateAdapter extends RecyclerView.Adapter<MapLocateAdapter.Cust
 
         customViewHolder.itemView.setTag(position);
 
+        //검색버튼을 눌럿을시 이벤트등록
         customViewHolder.imaProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //좋아요 된 장소를 버튼 클릭을 통한Google 검색기능 등록 하는 이벤트
                 String str = list.get(position).getTitle();
 
+                //구글 검색기능 uri 에 저장함
                 Uri uri =  Uri.parse("https://www.google.com/search?q="+str+"&oq="+str+"&aqs=chrome");
 
+                //저장된 uri 주소로 intent 해준다
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
 
                 intent.setPackage("com.android.chrome");
@@ -61,9 +64,11 @@ public class MapLocateAdapter extends RecyclerView.Adapter<MapLocateAdapter.Cust
             }
         });
 
+        //카메라 버튼을 눌럿을시 이벤트등록
         customViewHolder.imgPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //카메라 어플로 intent 시켜준다.
                 Intent intent = new Intent(view.getContext(),CameraActivity.class);
 
                 intent.putExtra("title",list.get(position).getTitle());
@@ -81,6 +86,7 @@ public class MapLocateAdapter extends RecyclerView.Adapter<MapLocateAdapter.Cust
     }
 
     //성능상의 향상을 위해 사용
+    // View 를 매번 inflate 를 하고있으므로 불필요한 메모리 낭비가되어 성능상의 문제가 생긴다. 사용시 화면에보이는 아이템만큼 view 를 재활용 하는구조이다
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         public ImageView imaProfile;
         public ImageView imgPhoto;
