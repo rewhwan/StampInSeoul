@@ -95,11 +95,13 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
             }
         });
 
+        //싱글톤 이후 삭제할 코드 =====
+        MainActivity.dbHelper = DBHelper.getInstance(context);
         MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
 
         Cursor cursor;
 
-        cursor = MainActivity.db.rawQuery("SELECT title FROM ZZIM_"+LoginActivity.userId+";", null);
+        cursor = MainActivity.db.rawQuery("SELECT title FROM ZZIM_"+ LoginSessionCallback.userId+";", null);
         while(cursor.moveToNext()){
             if(cursor.getString(0).equals(list.get(position).getTitle())){
                 list.get(position).setHart(true);
