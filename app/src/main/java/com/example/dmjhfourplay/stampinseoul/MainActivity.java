@@ -13,14 +13,10 @@ import me.relex.circleindicator.CircleIndicator;
 
 public class MainActivity extends AppCompatActivity {
 
-    private  long backButtonTime = 0;
+    private long backButtonTime = 0;
 
     private FragmentPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
-
-    public static DBHelper dbHelper;
-    public static SQLiteDatabase db;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +26,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
 
         fragmentPagerAdapter = new tutorialViewPagerAdapter(getSupportFragmentManager());
-
         setupViewPager(viewPager);
 
+        //인디케이터를 설정해준다
         CircleIndicator indicator = findViewById(R.id.indicator);
-
         indicator.setViewPager(viewPager);
     }
 

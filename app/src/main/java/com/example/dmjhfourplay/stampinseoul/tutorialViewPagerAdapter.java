@@ -11,6 +11,7 @@ import java.util.List;
 
 public class tutorialViewPagerAdapter extends FragmentPagerAdapter {
 
+    //Fragment를 어레이리스트로 관리
     private List<Fragment> mFragmentList = new ArrayList<>();
 
     public tutorialViewPagerAdapter(FragmentManager fm) {
