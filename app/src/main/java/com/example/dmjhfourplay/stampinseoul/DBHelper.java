@@ -16,6 +16,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper dbHelper;
 
+    private SQLiteDatabase writeableDatabase = getWritableDatabase();
+    private SQLiteDatabase readableDatabase = getReadableDatabase();
+
     //싱글톤 디자인
     private DBHelper(Context context) {
         super(context, DB_NAME,null,VERSION);
@@ -53,21 +56,17 @@ public class DBHelper extends SQLiteOpenHelper {
     //로그인 이후 유저테이블에 로그인한 유저의 정보를 생성해주는 함수
     public void userAdd(MeV2Response result) {
 
-        SQLiteDatabase db = getWritableDatabase();
-
         String query = "INSERT OR REPLACE INTO userTBL values('"
         + result.getId() + "','"
         + result.getNickname() + "','"
         + result.getProfileImagePath() +"');";
 
-        db.execSQL(query);
+        writeableDatabase.execSQL(query);
 
     }
 
     //새로 로그인한 유저일 경우 그 유저 전용 테이블 2개를 생성해줍니다.
     public void newUserAddTBL(MeV2Response result) {
-
-        SQLiteDatabase db = getWritableDatabase();
 
         //해당 유저의 찜목록을 저장해주는 테이블 생성
         String zzimTableQuery = "CREATE TABLE IF NOT EXISTS ZZIM_" + result.getId() + "("
@@ -77,7 +76,7 @@ public class DBHelper extends SQLiteOpenHelper {
         +"mapY REAL, "
         +"firstImage TEXT);";
 
-        db.execSQL(zzimTableQuery);
+        writeableDatabase.execSQL(zzimTableQuery);
 
         //해당 유저의 스탬프목록을 저장해주는 테이블 생성
         String stampTableQuery = "CREATE TABLE IF NOT EXISTS STAMP_" + result.getId() + "("
@@ -93,36 +92,56 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "contents TEXT, "
                 + "complete INTEGER);";
 
-        db.execSQL(stampTableQuery);
+        writeableDatabase.execSQL(stampTableQuery);
 
     }
 
     //==========================  ThemeActivity 에서 사용하는 함수 =====================================
     //ThemeActivity
 
-    //DB에 있는 찜목록을 가져와서 리스트로 반환
+    //DB에 있는 찜목록을 가져와서 커서로 반환
     public Cursor getZzimList() {
 
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM ZZIM_"+ LoginSessionCallback.userId +";",null);
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM ZZIM_"+ LoginSessionCallback.userId +";",null);
 
         return cursor;
     }
 
+    public void insertZzimList(ThemeData themeData) {
+
+        String query = "INSERT INTO ZZIM_" + LoginSessionCallback.userId + " VALUES('" + themeData.getTitle() + "', '"
+                + themeData.getAddr() + "', '"
+                + themeData.getMapX() + "', '"
+                + themeData.getMapY() + "', '"
+                + themeData.getFirstImage() + "');";
+        writeableDatabase.execSQL(query);
+    }
+
+    //찜목록 DB에서 삭제
     public void deleteZzimList(String title) {
 
-        SQLiteDatabase db = getWritableDatabase();
         String query = "DELETE FROM ZZIM_"+ LoginSessionCallback.userId +" WHERE title = '"+ title +"';";
-        db.execSQL(query);
+        writeableDatabase.execSQL(query);
     }
 
     //DB에 있는 Stamp테이블을 가져와서 반환
     public Cursor getStampList() {
 
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM STAMP_" + LoginSessionCallback.userId + ";",null);
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM STAMP_" + LoginSessionCallback.userId + ";",null);
 
         return cursor;
+    }
+
+    public void insertStampList(ArrayList<ThemeData> arrayList) {
+
+        for(ThemeData themeData : arrayList) {
+            String query = "INSERT INTO STAMP_"+ LoginSessionCallback.userId +"(title, addr, mapX, mapY, firstImage) VALUES ('"+ themeData.getTitle()+"'," + "'"
+                    +themeData.getAddr()+"','"
+                    +themeData.getMapX()+"','"
+                    +themeData.getMapY()+"','"
+                    +themeData.getFirstImage()+"');";
+            writeableDatabase.execSQL(query);
+        }
     }
 
 

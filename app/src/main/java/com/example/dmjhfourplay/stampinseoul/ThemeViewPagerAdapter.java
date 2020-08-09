@@ -19,13 +19,8 @@ public class ThemeViewPagerAdapter extends FragmentStatePagerAdapter {
             case 2: return new Theme_food_frag();
             case 3: return new Theme_Activity_frag();
             case 4: return new Theme_culture_frag();
-//            case 1: return Theme_shpping_frag.newInstance();
-//            case 2: return Theme_food_frag.newInstance();
-//            case 3: return Theme_Acti_frag.newInstance();
-//            case 4: return Theme_culture_frag.newInstance();
-//            default: return null;
+            default: return null;
         }
-        return null;
     }
 
     @Override

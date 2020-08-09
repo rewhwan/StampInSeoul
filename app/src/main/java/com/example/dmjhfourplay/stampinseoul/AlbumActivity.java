@@ -184,6 +184,9 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
                     ai = AnimationUtils.loadAnimation(view.getContext(), R.anim.fade_in);
                     stamp8C.startAnimation(ai);
                     break;
+
+                default:
+                    break;
             }
         }
 

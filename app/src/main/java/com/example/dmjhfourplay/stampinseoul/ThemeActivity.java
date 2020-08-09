@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -239,6 +240,15 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
 
                 final Dialog dialog = new Dialog(viewDialog.getContext());
 
+                //이미 추가된 것들은 체크가 되어 있도록 변경
+                Cursor cursor2 = dbHelper.getStampList();
+                if(list != null) {
+                    while (cursor2.moveToNext()) {
+                        int num = list.indexOf(new ThemeData(cursor2.getString(1)));
+                        listView.setItemChecked(num,true);
+                    }
+                }
+
                 //Check
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -258,6 +268,7 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                                     if(cursor1.getString(1).equals(list.get(position).getTitle())) {
                                         Toast.makeText(getApplicationContext(), list.get(position).getTitle() + " 이미 스탬프 리스트에 들어 있습니다.", Toast.LENGTH_LONG).show();
                                         checkedList.remove(list.get(position));
+                                        adapter.notifyDataSetChanged();
                                     }
                                 }
                                 cursor1.moveToFirst();
@@ -296,20 +307,9 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
 
                         Cursor cursor2 = dbHelper.getStampList();
 
-                        if(checkedList.size()+cursor2.getCount() > 8) {
-                            Toast.makeText(ThemeActivity.this, "스탬프 리스트에 8개 이상 담을 수 없습니다.\n현재 스탬프 리스트에는 "+cursor2.getCount()+"개 담겨있습니다.", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(ThemeActivity.this, "스탬프 리스트에 잘 담았습니다", Toast.LENGTH_SHORT).show();
-                            for (ThemeData themeData : checkedList) {
-                                String query = "INSERT INTO STAMP_"+ LoginSessionCallback.userId +"(title, addr, mapX, mapY, firstImage) VALUES ('"+ themeData.getTitle()+"'," + "'"
-                                        +themeData.getAddr()+"','"
-                                        +themeData.getMapX()+"','"
-                                        +themeData.getMapY()+"','"
-                                        +themeData.getFirstImage()+"');";
+                        dbHelper.insertStampList(checkedList);
+                        Toast.makeText(ThemeActivity.this, "스탬프 리스트에 잘 담았습니다", Toast.LENGTH_SHORT).show();
 
-                                MainActivity.db.execSQL(query);
-                            }
-                        }
                         cursor.close();
                         dialog.dismiss();
                     }

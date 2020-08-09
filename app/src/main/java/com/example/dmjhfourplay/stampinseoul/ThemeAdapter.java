@@ -54,7 +54,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
 
     RequestQueue queue;
 
-    Bitmap bitmap;
+    private DBHelper dbHelper;
 
     public ThemeAdapter(int layout, Context context, ArrayList<ThemeData> list) {
         super();
@@ -95,13 +95,10 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
             }
         });
 
-        //싱글톤 이후 삭제할 코드 =====
-        MainActivity.dbHelper = DBHelper.getInstance(context);
-        MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
+        dbHelper = DBHelper.getInstance(context);
 
-        Cursor cursor;
+        Cursor cursor = dbHelper.getZzimList();
 
-        cursor = MainActivity.db.rawQuery("SELECT title FROM ZZIM_"+ LoginSessionCallback.userId+";", null);
         while(cursor.moveToNext()){
             if(cursor.getString(0).equals(list.get(position).getTitle())){
                 list.get(position).setHart(true);
@@ -118,66 +115,37 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
             holder.Like_heart.setSelected(false);
         }
 
-
-        // holder.Like_heart.setSelected(false);
-
         holder.Like_heart.setOnClickListener(new View.OnClickListener() {
 
             @Override
-
             public void onClick(View v) {
 
-                MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
+                if (list.get(position).isHart()) {
 
-                try {
+                    // 하트 선택 해제
+                    holder.Like_heart.setSelected(false);
+                    list.get(position).setHart(false);
 
-                    if (list.get(position).isHart()) {
+                    dbHelper.deleteZzimList(list.get(position).getTitle());
 
-                        // 하트 선택 해제
+                } else {
 
-                        holder.Like_heart.setSelected(false);
-                        list.get(position).setHart(false);
+                    // 하트 선택
+                    holder.Like_heart.setSelected(true);
+                    list.get(position).setHart(true);
 
-                        String zzimDelete = "DELETE FROM ZZIM_"+LoginSessionCallback.userId+" WHERE title='"+list.get(position).getTitle()+"';";
-                        MainActivity.db.execSQL(zzimDelete);
+                    dbHelper.insertZzimList(list.get(position));
 
-                    } else {
+                    Log.d("TAG", "하트 선택 : "+list.get(position).getTitle());
 
-                        // 하트 선택
+                    holder.Like_heart.likeAnimation(new AnimatorListenerAdapter() {
 
-                        holder.Like_heart.setSelected(true);
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                        }
 
-                        list.get(position).setHart(true);
-
-                        String zzimInsert = "INSERT INTO ZZIM_" + LoginSessionCallback.userId + " VALUES('" + list.get(position).getTitle() + "', '"
-                                + list.get(position).getAddr() + "', '"
-                                + list.get(position).getMapX() + "', '"
-                                + list.get(position).getMapY() + "', '"
-                                + list.get(position).getFirstImage() + "');";
-
-                        MainActivity.db.execSQL(zzimInsert);
-
-                        Log.d("TAG", "하트 선택 : "+list.get(position).getFirstImage());
-                        Log.d("TAG", "하트를 선택하면 ZZIM 테이블 디비에 들어간다 : " + list.get(position).getAddr());
-
-                        holder.Like_heart.likeAnimation(new AnimatorListenerAdapter() {
-
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-
-                            }
-
-                        });
-
-                    }
-
-
-
-                }catch(SQLException e){
-
-                    Log.d(TAG, e.getMessage());
-
+                    });
                 }
 
             } // onClick
@@ -215,12 +183,6 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
 
         }
     }
-
-    public ThemeData TourData(int position){
-
-        return list != null ? list.get(position) : null;
-    }
-
 
     class AsyncTaskClassSub extends android.os.AsyncTask<Integer, ThemeData, ThemeData> {
 

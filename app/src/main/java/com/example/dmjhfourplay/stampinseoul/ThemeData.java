@@ -1,5 +1,7 @@
 package com.example.dmjhfourplay.stampinseoul;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class ThemeData implements Serializable {
@@ -20,6 +22,10 @@ public class ThemeData implements Serializable {
     private int contentsID;
 
     public ThemeData() {}
+
+    public ThemeData(String title) {
+        this.title = title;
+    }
 
     public ThemeData(String title, String firstImage, int contentsID) {
         this.title = title;
@@ -200,5 +206,18 @@ public class ThemeData implements Serializable {
                 ", hart=" + hart +
                 ", contentsID=" + contentsID +
                 '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+
+        boolean equal = false;
+
+        if(obj instanceof ThemeData) {
+            ThemeData themeData = (ThemeData) obj;
+            equal = (this.title).equals(themeData.getTitle());
+        }
+
+        return equal;
     }
 }

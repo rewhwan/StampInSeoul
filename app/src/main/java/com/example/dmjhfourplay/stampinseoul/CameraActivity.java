@@ -126,7 +126,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
             MainActivity.db=MainActivity.dbHelper.getWritableDatabase();
 
-            MainActivity.db.execSQL("UPDATE STAMP_"+LoginActivity.userId+" SET picture='"+imageFilepath
+            MainActivity.db.execSQL("UPDATE STAMP_"+LoginSessionCallback.userId+" SET picture='"+imageFilepath
                     +"', content_pola='"+edtPola.getText().toString() //한줄
                     +"', content_title='"+edtTitle.getText().toString() //제목
                     +"', contents='"+edtContents.getText().toString() //내용
