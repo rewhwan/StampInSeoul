@@ -205,7 +205,7 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
         Cursor cursor;
 
         //쿼리문 을통해 값을 가져온다
-        cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+LoginActivity.userId+";", null);
+        cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+LoginSessionCallback.userId+";", null);
 
         //가져온값을 list에 넣어준다
         if(cursor != null){

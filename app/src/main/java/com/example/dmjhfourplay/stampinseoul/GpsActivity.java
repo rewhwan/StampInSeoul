@@ -114,7 +114,7 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
         list.removeAll(list);
         MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
         Cursor cursor;
-        cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+LoginActivity.userId+";",null);
+        cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+LoginSessionCallback.userId+";",null);
         if(cursor != null){
             while(cursor.moveToNext()){
                 list.add(new ThemeData(cursor.getString(1),

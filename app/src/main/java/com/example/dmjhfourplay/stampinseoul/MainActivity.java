@@ -18,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
     private FragmentPagerAdapter fragmentPagerAdapter;
     private ViewPager viewPager;
 
+    public static DBHelper dbHelper;
+    public static SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

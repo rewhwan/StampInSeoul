@@ -109,7 +109,7 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
         //DB
         MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
 
-        String searchComplete = "SELECT * FROM STAMP_"+LoginActivity.userId+" WHERE complete=1;";
+        String searchComplete = "SELECT * FROM STAMP_"+LoginSessionCallback.userId+" WHERE complete=1;";
 
         Cursor cursorComplete = MainActivity.db.rawQuery(searchComplete, null);
 

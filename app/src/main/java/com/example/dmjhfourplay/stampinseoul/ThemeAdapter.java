@@ -138,7 +138,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
                         holder.Like_heart.setSelected(false);
                         list.get(position).setHart(false);
 
-                        String zzimDelete = "DELETE FROM ZZIM_"+LoginActivity.userId+" WHERE title='"+list.get(position).getTitle()+"';";
+                        String zzimDelete = "DELETE FROM ZZIM_"+LoginSessionCallback.userId+" WHERE title='"+list.get(position).getTitle()+"';";
                         MainActivity.db.execSQL(zzimDelete);
 
                     } else {
@@ -149,7 +149,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
 
                         list.get(position).setHart(true);
 
-                        String zzimInsert = "INSERT INTO ZZIM_" + LoginActivity.userId + " VALUES('" + list.get(position).getTitle() + "', '"
+                        String zzimInsert = "INSERT INTO ZZIM_" + LoginSessionCallback.userId + " VALUES('" + list.get(position).getTitle() + "', '"
                                 + list.get(position).getAddr() + "', '"
                                 + list.get(position).getMapX() + "', '"
                                 + list.get(position).getMapY() + "', '"
@@ -334,4 +334,5 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.MyViewHolder
 
         return detailThemeData;
     }
+
 }

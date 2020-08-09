@@ -1,10 +1,13 @@
 package com.example.dmjhfourplay.stampinseoul;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.kakao.usermgmt.response.MeV2Response;
+
+import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -45,6 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //=========================== 로그인 정보 관련 DB 처리 함수 =========================================
+    //LoginActivity
 
     //로그인 이후 유저테이블에 로그인한 유저의 정보를 생성해주는 함수
     public void userAdd(MeV2Response result) {
@@ -93,6 +97,36 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    //==========================  ThemeActivity 에서 사용하는 함수 =====================================
+    //ThemeActivity
+
+    //DB에 있는 찜목록을 가져와서 리스트로 반환
+    public Cursor getZzimList() {
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM ZZIM_"+ LoginSessionCallback.userId +";",null);
+
+        return cursor;
+    }
+
+    public void deleteZzimList(String title) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM ZZIM_"+ LoginSessionCallback.userId +" WHERE title = '"+ title +"';";
+        db.execSQL(query);
+    }
+
+    //DB에 있는 Stamp테이블을 가져와서 반환
+    public Cursor getStampList() {
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM STAMP_" + LoginSessionCallback.userId + ";",null);
+
+        return cursor;
+    }
+
+
+    //===============================================================================================
     //DB를 읽고 쓸 수 있게 해주는 SQLiteDatabse를 반환합니다
     public SQLiteDatabase getWritable() {
         return dbHelper.getWritableDatabase();

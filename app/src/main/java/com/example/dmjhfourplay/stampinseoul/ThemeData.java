@@ -181,4 +181,24 @@ public class ThemeData implements Serializable {
     public void setHart(boolean hart) {
         this.hart = hart;
     }
+
+    @Override
+    public String toString() {
+        return "ThemeData{" +
+                "title='" + title + '\'' +
+                ", firstImage='" + firstImage + '\'' +
+                ", addr='" + addr + '\'' +
+                ", tel='" + tel + '\'' +
+                ", overView='" + overView + '\'' +
+                ", picture='" + picture + '\'' +
+                ", content_pola='" + content_pola + '\'' +
+                ", content_title='" + content_title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", complete=" + complete +
+                ", mapX=" + mapX +
+                ", mapY=" + mapY +
+                ", hart=" + hart +
+                ", contentsID=" + contentsID +
+                '}';
+    }
 }

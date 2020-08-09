@@ -61,6 +61,9 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
     // 찜 목록에 뿌려주기 위해 만든 리스트
     private ArrayList<String> titleList = new ArrayList<>();
 
+    //데이터베이스
+    private DBHelper dbHelper;
+
     //플로팅 버튼 전역변수
     private FloatingActionButton fab, fab1, fab2;
     private Animation fab_open, fab_close;
@@ -80,8 +83,10 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
 
-        //뷰페이저 설정
+        //데이터베이스 관리를 도와줌
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
+        //뷰페이저 설정
         viewPager=findViewById(R.id.viewPager);
         tabLayout=findViewById(R.id.tabLayout);
 
@@ -100,8 +105,7 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
 
         viewPager.addOnPageChangeListener(this);
 
-        // == 검색
-
+        //검색
         edtSearch = findViewById(R.id.edtSearch);
         btnSearch = findViewById(R.id.btnSearch);
 
@@ -121,13 +125,11 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
 
+        //로그인 액티비티로부터 받은 로그인 정보를 변수로 저장한다
         Intent intent = getIntent();
-
         strNickname = intent.getStringExtra("name");
         strProfile = intent.getStringExtra("profile");
         Long strId = intent.getLongExtra("id", 0L);
-
-        // Toast.makeText(getApplicationContext(), strNickname+" 님, 환영합니다!", Toast.LENGTH_SHORT).show();
 
         Context context = getApplicationContext();
         CharSequence txt = "메시지입니다.";
@@ -206,19 +208,19 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
 
             //찜목록을 보여주는 버튼
             case R.id.fab2:
-                list.removeAll(list);
-                checkedList.removeAll(checkedList);
-                titleList.removeAll(titleList);
+                //리스트를 초기화
+                list.clear();
+                checkedList.clear();
+                titleList.clear();
                 anim();
 
                 final View viewDialog = view.inflate(view.getContext(),R.layout.dialog_favorites,null);
                 listView = viewDialog.findViewById(R.id.listView);
 
                 //DB에 있는 찜목록 테이블에 들어있는 리스트를 가져와준다
-                MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
-                final Cursor cursor;
-                cursor = MainActivity.db.rawQuery("Select * FROM ZZIM_"+ LoginActivity.userId +";",null);
+                final Cursor cursor = dbHelper.getZzimList();
 
+                //찜목록 테이블에 저장되어 있는 정보를 어레이 리스트에 저장
                 if(cursor != null) {
                     while (cursor.moveToNext()) {
                         list.add(new ThemeData(cursor.getString(0),cursor.getString(1),cursor.getDouble(2),cursor.getDouble(3),cursor.getString(4)));
@@ -246,21 +248,19 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                         //스탬프 리스트에 이미 있는 항목을 선택한 경우 checkedlist에 들어가지 못함
                         if(booleans.get(position)) {
                             checkedList.add(list.get(position));
-                            Log.d("TAG", " 처음 체크했을때 체크리스트 : " + checkedList);
+                            Log.d("TAG", " 체크한 체크리스트 : " + checkedList);
 
                             //DB관련 코드들
-                            MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
-                            Cursor cursor;
-                            cursor = MainActivity.db.rawQuery("SELECT title FROM STAMP_"+ LoginActivity.userId+";",null);
+                            Cursor cursor1 = dbHelper.getStampList();
 
                             if(checkedList != null) {
-                                while (cursor.moveToNext()) {
-                                    if(cursor.getString(0).equals(list.get(position).getTitle())) {
+                                while (cursor1.moveToNext()) {
+                                    if(cursor1.getString(1).equals(list.get(position).getTitle())) {
                                         Toast.makeText(getApplicationContext(), list.get(position).getTitle() + " 이미 스탬프 리스트에 들어 있습니다.", Toast.LENGTH_LONG).show();
                                         checkedList.remove(list.get(position));
                                     }
                                 }
-                                cursor.moveToFirst();
+                                cursor1.moveToFirst();
                             }
                         }else {
                             checkedList.remove(list.get(position));
@@ -273,8 +273,9 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        String query = "DELETE FROM ZZIM_"+ LoginActivity.userId +" WHERE title ='"+ list.get(position).getTitle()+"';";
-                        MainActivity.db.execSQL(query);
+
+                        //해당 아이템을 찜목록에서 삭제한다.
+                        dbHelper.deleteZzimList(list.get(position).getTitle());
 
                         adapter.remove(titleList.get(position));
                         adapter.notifyDataSetChanged();
@@ -284,6 +285,7 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                     }
                 });
 
+                //다이얼로그창을 만들고 보여준다
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setContentView(viewDialog);
                 dialog.show();
@@ -291,17 +293,15 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                 btnSave.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
-                        Cursor cursor;
-                        cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+ LoginActivity.userId+";",null);
-                        cursor.moveToFirst();
 
-                        if(checkedList.size()+cursor.getCount() > 8) {
-                            Toast.makeText(ThemeActivity.this, "스탬프 리스트에 8개 이상 담을 수 없습니다.\n현재 스탬프 리스트에는 "+cursor.getCount()+"개 담겨있습니다.", Toast.LENGTH_SHORT).show();
+                        Cursor cursor2 = dbHelper.getStampList();
+
+                        if(checkedList.size()+cursor2.getCount() > 8) {
+                            Toast.makeText(ThemeActivity.this, "스탬프 리스트에 8개 이상 담을 수 없습니다.\n현재 스탬프 리스트에는 "+cursor2.getCount()+"개 담겨있습니다.", Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(ThemeActivity.this, "스탬프 리스트에 잘 담았습니다", Toast.LENGTH_SHORT).show();
                             for (ThemeData themeData : checkedList) {
-                                String query = "INSERT INTO STAMP_"+ LoginActivity.userId +"(title, addr, mapX, mapY, firstImage) VALUES ('"+ themeData.getTitle()+"'," + "'"
+                                String query = "INSERT INTO STAMP_"+ LoginSessionCallback.userId +"(title, addr, mapX, mapY, firstImage) VALUES ('"+ themeData.getTitle()+"'," + "'"
                                         +themeData.getAddr()+"','"
                                         +themeData.getMapX()+"','"
                                         +themeData.getMapY()+"','"
@@ -315,13 +315,13 @@ public class ThemeActivity extends AppCompatActivity implements TabLayout.BaseOn
                     }
                 });
 
+                //닫기 클릭시 발생 이벤트
                 btnExit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
                     }
                 });
-
                 cursor.close();
                 break;
 
