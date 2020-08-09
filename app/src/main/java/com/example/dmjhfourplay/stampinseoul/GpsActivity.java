@@ -92,6 +92,8 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
     private DrawerLayout dl;
     private ConstraintLayout drawer;
 
+    private DBHelper dbHelper;
+
     int[] img = {R.drawable.gps_back1, R.drawable.gps_back2, R.drawable.gps_back3, R.drawable.gps_back4, R.drawable.gps_back5 };
 
     // == 로딩 애니메이션
@@ -108,13 +110,15 @@ public class GpsActivity extends Fragment implements View.OnClickListener,View.O
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        dbHelper = DBHelper.getInstance(getContext());
+
         view = inflater.inflate(R.layout.activity_gps,container,false);
 
         //==================================== DB 관련 ===========================================//
         list.removeAll(list);
-        MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
-        Cursor cursor;
-        cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+LoginSessionCallback.userId+";",null);
+
+        Cursor cursor = dbHelper.getStampList();
         if(cursor != null){
             while(cursor.moveToNext()){
                 list.add(new ThemeData(cursor.getString(1),

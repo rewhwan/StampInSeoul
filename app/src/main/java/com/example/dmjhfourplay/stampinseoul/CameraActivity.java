@@ -42,7 +42,10 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<CameraData> list = new ArrayList<>();
     private String imageFile;
     public static String title;
-    private SQLiteDatabase sqlDB;
+
+    private DBHelper dbHelper;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +75,6 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         btnCapture.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         btnExit.setOnClickListener(this);
-    }
-
-    //토스트 메세지 세팅하기
-    public void toastDispaly(String s) {
-        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
 
     //ID찾는 함수
@@ -124,16 +122,11 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
         } else if (v.getId() == R.id.btnSave) {
 
-            MainActivity.db=MainActivity.dbHelper.getWritableDatabase();
+            dbHelper = DBHelper.getInstance(getApplicationContext());
 
-            MainActivity.db.execSQL("UPDATE STAMP_"+LoginSessionCallback.userId+" SET picture='"+imageFilepath
-                    +"', content_pola='"+edtPola.getText().toString() //한줄
-                    +"', content_title='"+edtTitle.getText().toString() //제목
-                    +"', contents='"+edtContents.getText().toString() //내용
-                    +"', complete="+1 //성공여부
-                    +" WHERE title='"+title+"';");
+            String[] strings = {imageFilepath,edtPola.getText().toString(),edtTitle.getText().toString(),edtContents.getText().toString(),title};
 
-            MainActivity.db.close();
+            dbHelper.updateStampList(strings);
 
             finish();
 

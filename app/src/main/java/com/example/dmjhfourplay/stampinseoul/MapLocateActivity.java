@@ -78,6 +78,8 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
     private DrawerLayout drawerLayout;
     private ConstraintLayout drawer;
 
+    private DBHelper dbHelper;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -200,12 +202,10 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
         list.removeAll(list);
 
         //Main 의 DB 를 가져온다
-        MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
-
-        Cursor cursor;
+        dbHelper = DBHelper.getInstance(getContext());
 
         //쿼리문 을통해 값을 가져온다
-        cursor = MainActivity.db.rawQuery("SELECT * FROM STAMP_"+LoginSessionCallback.userId+";", null);
+        Cursor cursor = dbHelper.getStampList();
 
         //가져온값을 list에 넣어준다
         if(cursor != null){
@@ -358,5 +358,5 @@ public class MapLocateActivity extends Fragment implements OnMapReadyCallback, V
 
         public void onProviderDisabled(String provider) {
         }
-        };
+    };
 }

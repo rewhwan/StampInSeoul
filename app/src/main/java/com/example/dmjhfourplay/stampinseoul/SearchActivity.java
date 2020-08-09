@@ -57,6 +57,8 @@ public class SearchActivity extends AppCompatActivity {
     static final String KEY = "lHgLEEta%2BrgVVBrz0a5LWCybmPuBiL4Hok1S%2FMrUxkdv0dhe0B6xRnMflYD4JGvLZ96jbaDWDomL8oQOL%2BF0NQ%3D%3D";
     static final String APPNAME = "StampInSeoul";
 
+    private DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class SearchActivity extends AppCompatActivity {
         //이전 액티비티에서 보내준 검색어을 보내줍니다.
         Intent intent = getIntent();
         String word = intent.getStringExtra("word");
+        edtSearch2.setText(word);
 
         btnSearch2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,9 +107,9 @@ public class SearchActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
-                Cursor cursor;
-                cursor = MainActivity.db.rawQuery("SELECT title FROM ZZIM_" + LoginActivity.userId + ";", null);
+                dbHelper = DBHelper.getInstance(getApplicationContext());
+
+                Cursor cursor = dbHelper.getZzimList();
 
                 try {
                     //JSON파일에서 원하는 정보만 추출하여 옵니다
@@ -123,8 +126,11 @@ public class SearchActivity extends AppCompatActivity {
                         JSONObject imsi = (JSONObject) parse_itemlist.get(i);
                         String firstImage = imsi.getString("firstimage");
                         String title = imsi.getString("title");
+                        String addr = imsi.getString("addr1");
+                        double mapx = imsi.getDouble("mapx");
+                        double mapy = imsi.getDouble("mapy");
                         int contentID = imsi.getInt("contentid");
-                        ThemeData themeData = new ThemeData(title, firstImage, contentID);
+                        ThemeData themeData = new ThemeData(title,addr,mapx,mapy,firstImage,contentID);
 
                         while (cursor.moveToNext()) {
                             if (cursor.getString(0).equals(themeData.getTitle())) {

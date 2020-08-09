@@ -79,7 +79,46 @@ public class DBHelper extends SQLiteOpenHelper {
         writeableDatabase.execSQL(zzimTableQuery);
 
         //해당 유저의 스탬프목록을 저장해주는 테이블 생성
-        String stampTableQuery = "CREATE TABLE IF NOT EXISTS STAMP_" + result.getId() + "("
+       createStampList();
+
+    }
+
+    //==========================  ZzimTBL 관련 함수 =====================================
+    //ZzimTBL
+
+    //선택한 곳을 찜리스트 DB에 추가
+    public void insertZzimList(ThemeData themeData) {
+
+        String query = "INSERT INTO ZZIM_" + LoginSessionCallback.userId + " VALUES('" + themeData.getTitle() + "', '"
+                + themeData.getAddr() + "', '"
+                + themeData.getMapX() + "', '"
+                + themeData.getMapY() + "', '"
+                + themeData.getFirstImage() + "');";
+        writeableDatabase.execSQL(query);
+    }
+
+    //DB에 있는 찜목록을 가져와서 커서로 반환
+    public Cursor getZzimList() {
+
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM ZZIM_"+ LoginSessionCallback.userId +";",null);
+
+        return cursor;
+    }
+
+    //찜목록 DB에서 삭제
+    public void deleteZzimList(String title) {
+
+        String query = "DELETE FROM ZZIM_"+ LoginSessionCallback.userId +" WHERE title = '"+ title +"';";
+        writeableDatabase.execSQL(query);
+    }
+
+    //==========================  StampTBL 관련 함수 =====================================
+    //StampTBL
+
+    //Stamp테이블이 존재하지 않으면 새로 생성해주는 함수
+    public void createStampList() {
+
+        String query = "CREATE TABLE IF NOT EXISTS STAMP_" + LoginSessionCallback.userId + "("
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "title TEXT, "
                 + "addr TEXT, "
@@ -92,46 +131,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "contents TEXT, "
                 + "complete INTEGER);";
 
-        writeableDatabase.execSQL(stampTableQuery);
-
-    }
-
-    //==========================  ThemeActivity 에서 사용하는 함수 =====================================
-    //ThemeActivity
-
-    //DB에 있는 찜목록을 가져와서 커서로 반환
-    public Cursor getZzimList() {
-
-        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM ZZIM_"+ LoginSessionCallback.userId +";",null);
-
-        return cursor;
-    }
-
-    public void insertZzimList(ThemeData themeData) {
-
-        String query = "INSERT INTO ZZIM_" + LoginSessionCallback.userId + " VALUES('" + themeData.getTitle() + "', '"
-                + themeData.getAddr() + "', '"
-                + themeData.getMapX() + "', '"
-                + themeData.getMapY() + "', '"
-                + themeData.getFirstImage() + "');";
         writeableDatabase.execSQL(query);
     }
 
-    //찜목록 DB에서 삭제
-    public void deleteZzimList(String title) {
-
-        String query = "DELETE FROM ZZIM_"+ LoginSessionCallback.userId +" WHERE title = '"+ title +"';";
-        writeableDatabase.execSQL(query);
-    }
-
-    //DB에 있는 Stamp테이블을 가져와서 반환
-    public Cursor getStampList() {
-
-        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM STAMP_" + LoginSessionCallback.userId + ";",null);
-
-        return cursor;
-    }
-
+    //선택한 곳을 스탬프 리스트 DB에 추가
     public void insertStampList(ArrayList<ThemeData> arrayList) {
 
         for(ThemeData themeData : arrayList) {
@@ -144,15 +147,37 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    //DB에 있는 Stamp테이블을 가져와서 반환
+    public Cursor getStampList() {
 
-    //===============================================================================================
-    //DB를 읽고 쓸 수 있게 해주는 SQLiteDatabse를 반환합니다
-    public SQLiteDatabase getWritable() {
-        return dbHelper.getWritableDatabase();
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM STAMP_" + LoginSessionCallback.userId + ";",null);
+
+        return cursor;
     }
 
-    public SQLiteDatabase getReadable() {
-        return dbHelper.getReadableDatabase();
+    //사진 등록이 완료된 스탬프 리스트를 불러와줍니다.
+    public Cursor getCompleteStampList() {
+
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM STAMP_" + LoginSessionCallback.userId +" WHERE complete = 1;",null);
+
+        return cursor;
+    }
+
+    //스탬프 DB의 내용을 변경시켜 줍니다.
+    public void updateStampList(String[] strings) {
+        String query = "UPDATE STAMP_" + LoginSessionCallback.userId +" SET picture = '" + strings[0]
+        + "', content_pola = '" + strings[1]
+        + "', content_title = '" + strings[2]
+        + "', contents = '" + strings[3]
+        + "', complete = "+ 1
+        + " WHERE title = '" + strings[4] + "';";
+        writeableDatabase.execSQL(query);
+    }
+
+    //스탬프 테이블을 삭제해준다.
+    public void dropStampList() {
+        String query = "DROP TABLE IF EXISTS STAMP_" + LoginSessionCallback.userId +";";
+        writeableDatabase.execSQL(query);
     }
 
 }

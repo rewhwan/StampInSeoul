@@ -65,6 +65,8 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
     private ImageView stamp7C;
     private ImageView stamp8C;
 
+    private DBHelper dbHelper;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,11 +109,9 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
         stamoInvisible();
 
         //DB
-        MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
+        dbHelper = DBHelper.getInstance(getContext());
 
-        String searchComplete = "SELECT * FROM STAMP_"+LoginSessionCallback.userId+" WHERE complete=1;";
-
-        Cursor cursorComplete = MainActivity.db.rawQuery(searchComplete, null);
+        Cursor cursorComplete = dbHelper.getCompleteStampList();
 
         while(cursorComplete.moveToNext()){
             cameraList.add(new ThemeData(cursorComplete.getString(1), cursorComplete.getString(5),
@@ -190,6 +190,8 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
             }
         }
 
+        cursorComplete.close();
+
         albumAdapter = new AlbumAdapter(R.layout.album_item, cameraList);
 
         recyclerView.setAdapter(albumAdapter);
@@ -253,27 +255,15 @@ public class AlbumActivity extends Fragment implements View.OnClickListener, Vie
                     @Override
                     public void onClick(View v) {
 
-                        cameraList.removeAll(cameraList);
+                    cameraList.removeAll(cameraList);
 
-                        MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
-                        MainActivity.db.execSQL("DROP TABLE IF EXISTS STAMP_" + LoginActivity.userId + ";");
-                        MainActivity.db.execSQL("CREATE TABLE IF NOT EXISTS STAMP_" + LoginActivity.userId  + "("
-                                + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                + "title TEXT, "
-                                + "addr TEXT, "
-                                + "mapX REAL, "
-                                + "mapY REAL, "
-                                + "firstImage TEXT, "
-                                + "picture TEXT, "
-                                + "content_pola TEXT, "
-                                + "content_title TEXT, "
-                                + "contents TEXT, "
-                                + "complete INTEGER);");
+                    dbHelper.dropStampList();
+                    dbHelper.createStampList();
 
 //                        Intent intent = new Intent(v.getContext(), ThemeActivity.class);
 //                        startActivity(intent);
 
-                        getActivity().finish();
+                    getActivity().finish();
 
                     }
                 });

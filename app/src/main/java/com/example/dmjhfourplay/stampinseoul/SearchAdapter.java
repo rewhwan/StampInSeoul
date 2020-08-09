@@ -52,6 +52,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
     ThemeData detailThemeData = new ThemeData();
     RequestQueue queue;
 
+    private DBHelper dbHelper;
+
     public SearchAdapter(Context context, ArrayList<ThemeData> list, int layout) {
         this.context = context;
         this.list = list;
@@ -85,24 +87,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MyViewHold
         myViewHolder.Like_heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.db = MainActivity.dbHelper.getWritableDatabase();
+                dbHelper = DBHelper.getInstance(context);
 
                 if(list.get(position).isHart()) {
                     //하트 선택해제
                     myViewHolder.Like_heart.setSelected(false);
                     list.get(position).setHart(false);
 
-                    String zzimDelet = "DELETE FROM ZZIM_"+ LoginActivity.userId +" WHERE title ='"+ list.get(position).getTitle()+"';";
-                    MainActivity.db.execSQL(zzimDelet);
+                    dbHelper.deleteZzimList(list.get(position).getTitle());
                 }else {
                     myViewHolder.Like_heart.setSelected(true);
                     list.get(position).setHart(true);
 
-                    String zzimInsert = "INSERT INTO ZZIM_"+ LoginActivity.userId +"(title,addr,mapX,mapY) VALUES('"+ list.get(position).getTitle()+"', '"
-                            + list .get(position).getAddr() + "', '"
-                            + list .get(position).getMapX() + "', '"
-                            + list .get(position).getMapY() + "');";
-                    MainActivity.db.execSQL(zzimInsert);
+                    dbHelper.insertZzimList(list.get(position));
                     myViewHolder.Like_heart.likeAnimation(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationResume(Animator animation) {
