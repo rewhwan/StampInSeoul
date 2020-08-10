@@ -135,7 +135,6 @@ public class MoreAdapter extends BaseExpandableListAdapter {
 
         // txtContentChild에 childList의 데이터 정보를 띄운다.
         viewHolder.txtContentChild.setText(childList.get(groupPosition).get(childPosition));
-//        viewHolder.kakaoImageView.setIma
 
         return convertView; // 이를 리턴하여 view에 띄운다.
 

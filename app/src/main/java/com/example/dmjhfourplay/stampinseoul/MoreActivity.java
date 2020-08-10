@@ -46,8 +46,8 @@ public class MoreActivity extends Fragment {
 
     // ArrayList<String>으로 새로운 ArrayList 객체 childListContent 1~5를 만든다.
     private ArrayList<String> childListContent1 = new ArrayList<>();
-    private ArrayList<String> childListContent4 = new ArrayList<>();
-    private ArrayList<String> childListContent5 = new ArrayList<>();
+    private ArrayList<String> childListContent2 = new ArrayList<>();
+    private ArrayList<String> childListContent3 = new ArrayList<>();
 
     private DBHelper dbHelper;
     String loginName;
@@ -82,17 +82,18 @@ public class MoreActivity extends Fragment {
             }
         }
 
-        childListContent1.add("카카오 닉네임 : " + loginName +"\n카카오 고유번호 : " + LoginSessionCallback.userId);
-        childListContent4.add("AppName : Stamp In Seoul\n");
-        childListContent5.add("Team Name : 김오박이");
-        childListContent5.add("김진혁");
-        childListContent5.add("오선환");
-        childListContent5.add("박다니엘");
-        childListContent5.add("이민혁");
+        childListContent1.add("카카오 닉네임 : " + loginName + "\n카카오 고유번호 : " + LoginSessionCallback.userId);
+        childListContent2.add("AppName : Stamp In Seoul");
+        childListContent2.add("AppName : Stamp In Seoul");
+        childListContent3.add("Team Name : 김오박이");
+        childListContent3.add("김진혁");
+        childListContent3.add("오선환");
+        childListContent3.add("박다니엘");
+        childListContent3.add("이민혁");
 
         childList.add(childListContent1);
-        childList.add(childListContent4);
-        childList.add(childListContent5);
+        childList.add(childListContent2);
+        childList.add(childListContent3);
 
         // ExpendableListView에 어댑터 내용을 적용한다.
         eListView.setAdapter(new MoreAdapter(view.getContext(), groupList, childList));
@@ -118,7 +119,6 @@ public class MoreActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 onClickLogout();
-//                Intent intent = new Intent(view.getContext(), LoginActivity.class); // 로그인 화면으로 이동.
                 Toast.makeText(view.getContext(), "로그아웃 합니다.", Toast.LENGTH_SHORT).show(); // 토스트 메시지 띄우기.
             }
         });
