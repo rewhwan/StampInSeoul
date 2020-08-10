@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 // MoreActivity의 MoreAdapter 클래스
 
 public class MoreAdapter extends BaseExpandableListAdapter {
@@ -65,6 +67,7 @@ public class MoreAdapter extends BaseExpandableListAdapter {
             // more_item 안에 있는 UI 아이디 (txtContent, imgArrow)를 등록한다.
             viewHolder.txtContent = convertView.findViewById(R.id.txtContent);
             viewHolder.imgArrow = convertView.findViewById(R.id.imgArrow);
+            viewHolder.kakaoImageView = convertView.findViewById(R.id.kakaoImageView);
 
             // 이를 적용한다.
             convertView.setTag(viewHolder);
@@ -132,6 +135,7 @@ public class MoreAdapter extends BaseExpandableListAdapter {
 
         // txtContentChild에 childList의 데이터 정보를 띄운다.
         viewHolder.txtContentChild.setText(childList.get(groupPosition).get(childPosition));
+//        viewHolder.kakaoImageView.setIma
 
         return convertView; // 이를 리턴하여 view에 띄운다.
 
@@ -155,6 +159,7 @@ public class MoreAdapter extends BaseExpandableListAdapter {
      public ImageView imgArrow; // more_item 객체에 있는 UI
      public TextView txtContent; // more_item 객체에 있는 UI
      public TextView txtContentChild; // more_item_child 객체에 있는 UI
+     public CircleImageView kakaoImageView;
 
     }// end of ViewHolder
 

@@ -83,6 +83,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    //==========================  userTBL 관련 함수 =====================================
+    public Cursor getUserData() {
+        Cursor cursor = readableDatabase.rawQuery("SELECT * FROM userTBL WHERE userID = "+ LoginSessionCallback.userId +";",null);
+        return cursor;
+    }
+
     //==========================  ZzimTBL 관련 함수 =====================================
     //ZzimTBL
 

@@ -129,7 +129,7 @@ public class Theme_festival_frag extends Fragment {
         String url = "http://api.visitkorea.or.kr/openapi/service/"
                 + "rest/KorService/areaBasedList?ServiceKey=" + KEY
                 + "&areaCode=1&contentTypeId=15&listYN=Y&arrange=D"
-                + "&numOfRows=20&pageNo=1&MobileOS=AND&MobileApp="
+                + "&numOfRows=50&pageNo=1&MobileOS=AND&MobileApp="
                 + appName + "&_type=json";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest

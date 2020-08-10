@@ -1,6 +1,7 @@
 package com.example.dmjhfourplay.stampinseoul;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -46,10 +46,12 @@ public class MoreActivity extends Fragment {
 
     // ArrayList<String>으로 새로운 ArrayList 객체 childListContent 1~5를 만든다.
     private ArrayList<String> childListContent1 = new ArrayList<>();
-    private ArrayList<String> childListContent2 = new ArrayList<>();
-    private ArrayList<String> childListContent3 = new ArrayList<>();
     private ArrayList<String> childListContent4 = new ArrayList<>();
     private ArrayList<String> childListContent5 = new ArrayList<>();
+
+    private DBHelper dbHelper;
+    String loginName;
+    String loginImage;
 
 
     // View를 만든다.
@@ -67,24 +69,28 @@ public class MoreActivity extends Fragment {
 
         groupList.removeAll(groupList); // groupList에 있는 데이터 정보를 모두 지운다.
 
-        groupList.add("내 정보");
-        groupList.add("고객 센터");             // groupList
-        groupList.add("이용 약관");             // 데이터 정보
+        groupList.add("카카오 로그인 정보");
         groupList.add("App 정보");
         groupList.add("개발자 정보");
 
-        childListContent1.add("내 정보 테스트 입니다.");
-        childListContent2.add("고객 센터 테스트 입니다.");     // childListContent 1~5
-        childListContent3.add("이용 약관 테스트 입니다.");     //     데이터 정보
-        childListContent4.add("App 정보 테스트 입니다.");
+        dbHelper = DBHelper.getInstance(getContext());
+        Cursor cursor = dbHelper.getUserData();
+        while (cursor.moveToNext()) {
+            if (cursor != null) {
+                loginName = cursor.getString(1);
+                loginImage = cursor.getString(2);
+            }
+        }
+
+        childListContent1.add("카카오 닉네임 : " + loginName +"\n카카오 고유번호 : " + LoginSessionCallback.userId);
+        childListContent4.add("AppName : Stamp In Seoul\n");
+        childListContent5.add("Team Name : 김오박이");
         childListContent5.add("김진혁");
-        childListContent5.add("이민혁");
-        childListContent5.add("박다니엘");
         childListContent5.add("오선환");
+        childListContent5.add("박다니엘");
+        childListContent5.add("이민혁");
 
         childList.add(childListContent1);
-        childList.add(childListContent2);
-        childList.add(childListContent3);
         childList.add(childListContent4);
         childList.add(childListContent5);
 
@@ -116,8 +122,6 @@ public class MoreActivity extends Fragment {
                 Toast.makeText(view.getContext(), "로그아웃 합니다.", Toast.LENGTH_SHORT).show(); // 토스트 메시지 띄우기.
             }
         });
-
-
 
         return view;
 
