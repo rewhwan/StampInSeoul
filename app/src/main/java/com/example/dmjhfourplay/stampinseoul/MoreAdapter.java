@@ -67,7 +67,6 @@ public class MoreAdapter extends BaseExpandableListAdapter {
             // more_item 안에 있는 UI 아이디 (txtContent, imgArrow)를 등록한다.
             viewHolder.txtContent = convertView.findViewById(R.id.txtContent);
             viewHolder.imgArrow = convertView.findViewById(R.id.imgArrow);
-            viewHolder.kakaoImageView = convertView.findViewById(R.id.kakaoImageView);
 
             // 이를 적용한다.
             convertView.setTag(viewHolder);

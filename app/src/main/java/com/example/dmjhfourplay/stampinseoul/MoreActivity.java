@@ -48,6 +48,7 @@ public class MoreActivity extends Fragment {
     private ArrayList<String> childListContent1 = new ArrayList<>();
     private ArrayList<String> childListContent2 = new ArrayList<>();
     private ArrayList<String> childListContent3 = new ArrayList<>();
+    private ArrayList<String> childListContent4 = new ArrayList<>();
 
     private DBHelper dbHelper;
     String loginName;
@@ -71,6 +72,7 @@ public class MoreActivity extends Fragment {
 
         groupList.add("카카오 로그인 정보");
         groupList.add("App 정보");
+        groupList.add("API 정보");
         groupList.add("개발자 정보");
 
         dbHelper = DBHelper.getInstance(getContext());
@@ -83,17 +85,20 @@ public class MoreActivity extends Fragment {
         }
 
         childListContent1.add("카카오 닉네임 : " + loginName + "\n카카오 고유번호 : " + LoginSessionCallback.userId);
-        childListContent2.add("AppName : Stamp In Seoul");
-        childListContent2.add("AppName : Stamp In Seoul");
-        childListContent3.add("Team Name : 김오박이");
-        childListContent3.add("김진혁");
-        childListContent3.add("오선환");
-        childListContent3.add("박다니엘");
-        childListContent3.add("이민혁");
+        childListContent2.add("어플 이름 : Stamp In Seoul");
+        childListContent2.add("Version : 1.0");
+        childListContent3.add("API 이름 : 국문 관광정보 서비스");
+        childListContent3.add("제공 : 한국관광공사");
+        childListContent4.add("Team Name : 김오박이");
+        childListContent4.add("김진혁");
+        childListContent4.add("오선환");
+        childListContent4.add("박다니엘");
+        childListContent4.add("이민혁");
 
         childList.add(childListContent1);
         childList.add(childListContent2);
         childList.add(childListContent3);
+        childList.add(childListContent4);
 
         // ExpendableListView에 어댑터 내용을 적용한다.
         eListView.setAdapter(new MoreAdapter(view.getContext(), groupList, childList));
