@@ -13,6 +13,7 @@ public class GpsAnimationDialog extends ProgressDialog {
 
     private Context c;
 
+
     public GpsAnimationDialog(Context context) {
         super(context);
 

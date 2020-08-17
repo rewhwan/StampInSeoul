@@ -110,7 +110,7 @@ public class Theme_food_frag extends Fragment {
         //맛집 코드 39
         String url = "http://api.visitkorea.or.kr/openapi/service/"
                 + "rest/KorService/areaBasedList?ServiceKey=" + key
-                + "&areaCode=1&contentTypeId=39&listYN=Y&arrange=P"
+                + "&areaCode=1&contentTypeId=39&listYN=Y&arrange=D"
                 + "&numOfRows=50&pageNo=1&MobileOS=AND&MobileApp="
                 + appName + "&_type=json";
 

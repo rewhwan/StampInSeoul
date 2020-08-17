@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="316dp"
         android:fontFamily="@font/bmjua"
-        android:text="Stamp In Seoul"
+        android:text="Tour In Seoul"
         android:textColor="#494747"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"

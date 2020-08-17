@@ -119,7 +119,7 @@ public class Theme_shpping_frag extends Fragment {
         //쇼핑의 타입 ID는 38번
         String url = "http://api.visitkorea.or.kr/openapi/service/"
                 + "rest/KorService/areaBasedList?ServiceKey=" + key
-                + "&areaCode=1&contentTypeId=38&listYN=Y&arrange=P"
+                + "&areaCode=1&contentTypeId=38&listYN=Y&arrange=Q"
                 + "&numOfRows=50&pageNo=1&MobileOS=AND&MobileApp="
                 + appName + "&_type=json";
 

@@ -85,7 +85,7 @@ public class MoreActivity extends Fragment {
         }
 
         childListContent1.add("카카오 닉네임 : " + loginName + "\n카카오 고유번호 : " + LoginSessionCallback.userId);
-        childListContent2.add("어플 이름 : Stamp In Seoul");
+        childListContent2.add("어플 이름 : Tour In Seoul");
         childListContent2.add("Version : 1.0");
         childListContent3.add("API 이름 : 국문 관광정보 서비스");
         childListContent3.add("제공 : 한국관광공사");

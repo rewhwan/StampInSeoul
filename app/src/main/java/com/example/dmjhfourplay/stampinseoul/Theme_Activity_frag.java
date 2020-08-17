@@ -108,7 +108,7 @@ public class Theme_Activity_frag extends Fragment {
         //액티비티 28
         String url = "http://api.visitkorea.or.kr/openapi/service/"
                 + "rest/KorService/areaBasedList?ServiceKey=" + key
-                + "&areaCode=1&contentTypeId=28&listYN=Y&arrange=P"
+                + "&areaCode=1&contentTypeId=28&listYN=Y&arrange=R"
                 + "&numOfRows=50&pageNo=1&MobileOS=AND&MobileApp="
                 + appName + "&_type=json";
 
